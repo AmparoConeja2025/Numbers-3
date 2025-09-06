@@ -6,6 +6,8 @@
     <title>Numbers Learning Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
+
+
 <style>
   /* FORCE LANDSCAPE ORIENTATION */
   @media screen and (orientation: portrait) {
@@ -243,22 +245,24 @@
   }
 
   /* Mobile responsive number bank */
-  @media (max-width: 800px) and (orientation: landscape) {
-      .numbers-bank {
-          bottom: 80px;
-          gap: 12px;
-          padding: 15px;
-          flex-wrap: wrap;
-          justify-content: center;
-          max-width: 90%;
-      }
-      
-      .number-tile {
-          padding: 12px 20px;
-          font-size: 24px;
-          min-width: 60px;
-      }
-  }
+@media (max-width: 800px) and (orientation: landscape) {
+    .numbers-bank {
+        bottom: 80px;
+        gap: 8px;           /* Reduce gap from 12px to 8px */
+        padding: 10px;      /* Reduce padding from 15px to 10px */
+        flex-wrap: nowrap;  /* Force single row - no wrapping */
+        justify-content: center;
+        max-width: 95%;     /* Increase from 90% to 95% */
+        overflow-x: auto;   /* Allow horizontal scroll if needed */
+    }
+    
+    .number-tile {
+        padding: 10px 16px; /* Reduce padding from 12px 20px */
+        font-size: 20px;    /* Reduce from 24px */
+        min-width: 50px;    /* Reduce from 60px */
+        flex-shrink: 0;     /* Prevent tiles from shrinking */
+    }
+}
 
   /* Number in drop zone */
   .dropped-number {
@@ -301,7 +305,7 @@
       left: 50%;
       transform: translateX(-50%);
       display: flex;
-      gap: 10px;
+      gap: 8px;
       z-index: 15;
   }
 
@@ -309,12 +313,13 @@
       background: rgba(255, 255, 255, 0.2);
       color: white;
       border: 2px solid rgba(255, 255, 255, 0.3);
-      padding: 8px 16px;
-      border-radius: 20px;
+      padding: 6px 12px;
+      border-radius: 18px;
       font-weight: 600;
       cursor: pointer;
       transition: all 0.3s ease;
       backdrop-filter: blur(10px);
+      font-size: 13px;
   }
 
   .mode-button.active {
@@ -326,13 +331,13 @@
   @media (max-width: 800px) and (orientation: landscape) {
       .mode-selector {
           top: 15px;
-          gap: 6px;
+          gap: 4px;
       }
       
       .mode-button {
-          padding: 4px 8px;
-          font-size: 11px;
-          border-radius: 15px;
+          padding: 3px 6px;
+          font-size: 10px;
+          border-radius: 12px;
       }
   }
 
@@ -439,10 +444,7 @@
     <!-- Harry Avatar (Right - Male) -->  
     <img src="images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
 
-    <!-- Continue Learning Buttons -->
-    <button class="continue-button-left" id="continueButtonLeft">Continue</button>
-    <button class="continue-button-right" id="continueButtonRight">Continue</button>
-
+    
     <!-- Drop Zone -->
     <div class="drop-zone" id="dropZone">
         <div class="drop-zone-placeholder" id="dropZonePlaceholder">
@@ -457,8 +459,10 @@
 
     <!-- Mode Selector -->
     <div class="mode-selector">
-        <button class="mode-button active" id="basicMode">Basic (0-10)</button>
-        <button class="mode-button" id="advancedMode">Advanced (0-20)</button>
+        <button class="mode-button active" id="basicMode">Level 1 (0-10)</button>
+        <button class="mode-button" id="intermediateMode">Level 2 (0-20)</button>
+        <button class="mode-button" id="advancedMode">Level 3 (11-100)</button>
+        <!-- <button class="mode-button" id="expertMode">Level 4 (1-100)</button> -->
     </div>
 
     <!-- Fireworks Container -->
@@ -469,12 +473,14 @@
     <audio id="rachelAudio"></audio>
 
     <script>
-        // Number data
+        // Extended number data with tens
         const numbers = {
             0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 
             5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten',
             11: 'eleven', 12: 'twelve', 13: 'thirteen', 14: 'fourteen', 15: 'fifteen',
-            16: 'sixteen', 17: 'seventeen', 18: 'eighteen', 19: 'nineteen', 20: 'twenty'
+            16: 'sixteen', 17: 'seventeen', 18: 'eighteen', 19: 'nineteen', 20: 'twenty',
+            30: 'thirty', 40: 'forty', 50: 'fifty', 60: 'sixty', 70: 'seventy',
+            80: 'eighty', 90: 'ninety', 100: 'one hundred'
         };
 
         // Game state
@@ -491,8 +497,7 @@
         const dropZonePlaceholder = document.getElementById('dropZonePlaceholder');
         const numbersBank = document.getElementById('numbersBank');
         const fireworksContainer = document.getElementById('fireworksContainer');
-        const continueButtonLeft = document.getElementById('continueButtonLeft');
-        const continueButtonRight = document.getElementById('continueButtonRight');
+       
 
         // Audio setup
         let audioUnlocked = false;
@@ -524,9 +529,18 @@
 
         // Get number range based on mode
         function getNumberRange() {
-            return currentMode === 'basic' ? 
-                Array.from({length: 11}, (_, i) => i) : 
-                Array.from({length: 21}, (_, i) => i);
+            switch(currentMode) {
+                case 'basic':
+                    return Array.from({length: 11}, (_, i) => i); // 0-10
+                case 'intermediate':
+                    return Array.from({length: 21}, (_, i) => i); // 0-20
+                case 'advanced':
+                    return [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 30, 40, 50, 60, 70, 80, 90, 100]; // 11-100 (teens + tens)
+                case 'expert':
+                    return Array.from({length: 100}, (_, i) => i + 1); // 1-100 (placeholder for future)
+                default:
+                    return Array.from({length: 11}, (_, i) => i);
+            }
         }
 
         // Generate random number for the question
@@ -554,17 +568,23 @@
             const range = getNumberRange();
             let filteredRange;
             
-            // In advanced mode, group by digit count
-            if (currentMode === 'advanced') {
+            // Smart filtering based on mode and number
+            if (currentMode === 'intermediate') {
                 if (correctNumber <= 9) {
-                    // Single digit: filter to 0-9
                     filteredRange = range.filter(n => n <= 9);
                 } else {
-                    // Double digit: filter to 10-20
                     filteredRange = range.filter(n => n >= 10);
                 }
+            } else if (currentMode === 'advanced') {
+                if (correctNumber <= 20) {
+                    filteredRange = range.filter(n => n <= 20);
+                } else {
+                    filteredRange = range.filter(n => n >= 30);
+                }
+            } else if (currentMode === 'expert') {
+                // For future implementation - group by similar ranges
+                filteredRange = range;
             } else {
-                // Basic mode uses full range (all single digits anyway)
                 filteredRange = range;
             }
             
@@ -667,7 +687,9 @@
 
         // Handle correct answer
         function handleCorrectAnswer() {
-            score += currentMode === 'basic' ? 1 : 2;
+            // Award more points for harder levels
+            const pointsMap = { basic: 1, intermediate: 2, advanced: 3, expert: 4 };
+            score += pointsMap[currentMode];
             isShowingCelebration = true;
             
             // Add green styling and celebration effect
@@ -680,19 +702,19 @@
             createFireworks();
 
             // Make correct tile pulse with color change
-setTimeout(() => {
-    const numberTiles = document.querySelectorAll('.number-tile');
-    numberTiles.forEach(tile => {
-        if (parseInt(tile.textContent) === currentNumber) {
-            tile.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
-            tile.style.animation = 'numberPulse 0.8s ease-in-out infinite';
-        }
-    });
-}, 100);
+            setTimeout(() => {
+                const numberTiles = document.querySelectorAll('.number-tile');
+                numberTiles.forEach(tile => {
+                    if (parseInt(tile.textContent) === currentNumber) {
+                        tile.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                        tile.style.animation = 'numberPulse 0.8s ease-in-out infinite';
+                    }
+                });
+            }, 100);
             
             // Show continue buttons
-            continueButtonLeft.style.display = 'block';
-            continueButtonRight.style.display = 'block';
+            // continueButtonLeft.style.display = 'block';
+            // continueButtonRight.style.display = 'block';
             
             // Auto-play the correct number
             setTimeout(() => {
@@ -743,13 +765,13 @@ setTimeout(() => {
             });
             
             setTimeout(() => {
-    document.body.removeChild(flyingReject);
-    originalTile.style.visibility = 'visible';
-    originalTile.style.opacity = '1';
-    
-    // Avatar speaks correct number after wrong answer
-    speakNumber(currentNumber);
-}, 600);
+                document.body.removeChild(flyingReject);
+                originalTile.style.visibility = 'visible';
+                originalTile.style.opacity = '1';
+                
+                // Avatar speaks correct number after wrong answer
+                speakNumber(currentNumber);
+            }, 600);
         }
 
         // Reset drop zone
@@ -791,17 +813,18 @@ setTimeout(() => {
         // Hide celebration and start next question
         function hideCelebration() {
             isShowingCelebration = false;
-            continueButtonLeft.style.display = 'none';
-            continueButtonRight.style.display = 'none';
-            startNewQuestion();
-        }
-
+         // continueButtonLeft.style.display = 'none';
+        // continueButtonRight.style.display = 'none';
+            
             // Stop pulsing and reset colors
             const numberTiles = document.querySelectorAll('.number-tile');
             numberTiles.forEach(tile => {
                 tile.style.animation = '';
                 tile.style.background = 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)';
             });
+            
+            startNewQuestion();
+        }
 
         // Start new question
         function startNewQuestion() {
@@ -817,40 +840,51 @@ setTimeout(() => {
 
         // Switch mode
         function switchMode(mode) {
-            
-            
             currentMode = mode;
             usedNumbers = [];
             
+            // Update button states
             document.getElementById('basicMode').classList.toggle('active', mode === 'basic');
+            document.getElementById('intermediateMode').classList.toggle('active', mode === 'intermediate');
             document.getElementById('advancedMode').classList.toggle('active', mode === 'advanced');
+            // document.getElementById('expertMode').classList.toggle('active', mode === 'expert');
             
             startNewQuestion();
         }
 
-        // Event listeners
-        continueButtonLeft.addEventListener('click', () => {
-            currentVoice = 'rachel';
-            hideCelebration();
-        });
-        continueButtonRight.addEventListener('click', () => {
-            currentVoice = 'adam';
-            hideCelebration();
-        });
+      
         
         document.getElementById('basicMode').addEventListener('click', () => switchMode('basic'));
+        document.getElementById('intermediateMode').addEventListener('click', () => switchMode('intermediate'));
         document.getElementById('advancedMode').addEventListener('click', () => switchMode('advanced'));
+        // document.getElementById('expertMode').addEventListener('click', () => switchMode('expert'));
 
-        // Avatar click handlers
-        document.getElementById('rachelAvatar').addEventListener('click', () => {
-            currentVoice = 'rachel';
-            if (currentNumber !== null && !isShowingCelebration) speakNumber(currentNumber);
-        });
+   // Avatar click handlers
+document.getElementById('rachelAvatar').addEventListener('click', () => {
+    if (isShowingCelebration) {
+        currentVoice = 'rachel';
+        speakNumber(currentNumber);  // Speak the number immediately
+        setTimeout(() => {
+            hideCelebration();
+        }, 2000); // Then advance after 2 seconds
+    } else {
+        currentVoice = 'rachel';
+        if (currentNumber !== null && !isShowingCelebration) speakNumber(currentNumber);
+    }
+});
 
-        document.getElementById('adamAvatar').addEventListener('click', () => {
-            currentVoice = 'adam';
-            if (currentNumber !== null && !isShowingCelebration) speakNumber(currentNumber);
-        });
+document.getElementById('adamAvatar').addEventListener('click', () => {
+    if (isShowingCelebration) {
+        currentVoice = 'adam';
+        speakNumber(currentNumber);  // Speak the number immediately
+        setTimeout(() => {
+            hideCelebration();
+        }, 2000); // Then advance after 2 seconds
+    } else {
+        currentVoice = 'adam';
+        if (currentNumber !== null && !isShowingCelebration) speakNumber(currentNumber);
+    }
+});
 
         // Touch events for mobile audio unlock
         document.addEventListener('touchstart', unlockAudio, { once: true });
