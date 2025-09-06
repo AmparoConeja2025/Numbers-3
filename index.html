@@ -6,8 +6,6 @@
     <title>Numbers Learning Center</title>
     <script src="https://cdn.tailwindcss.com"></script>
 
-
-
 <style>
   /* FORCE LANDSCAPE ORIENTATION */
   @media screen and (orientation: portrait) {
@@ -835,7 +833,7 @@
             
             setTimeout(() => {
                 speakNumber(currentNumber);
-            }, 1000);
+            }, 200);
         }
 
         // Switch mode
@@ -859,14 +857,14 @@
         document.getElementById('advancedMode').addEventListener('click', () => switchMode('advanced'));
         // document.getElementById('expertMode').addEventListener('click', () => switchMode('expert'));
 
-   // Avatar click handlers
+  // Avatar click handlers
 document.getElementById('rachelAvatar').addEventListener('click', () => {
     if (isShowingCelebration) {
         currentVoice = 'rachel';
-        speakNumber(currentNumber);  // Speak the number immediately
+        // Remove this line: speakNumber(currentNumber);
         setTimeout(() => {
             hideCelebration();
-        }, 2000); // Then advance after 2 seconds
+        }, 200); // Wait for celebration to complete
     } else {
         currentVoice = 'rachel';
         if (currentNumber !== null && !isShowingCelebration) speakNumber(currentNumber);
@@ -876,10 +874,10 @@ document.getElementById('rachelAvatar').addEventListener('click', () => {
 document.getElementById('adamAvatar').addEventListener('click', () => {
     if (isShowingCelebration) {
         currentVoice = 'adam';
-        speakNumber(currentNumber);  // Speak the number immediately
+        // Remove this line: speakNumber(currentNumber);
         setTimeout(() => {
             hideCelebration();
-        }, 2000); // Then advance after 2 seconds
+        }, 200); // Wait for celebration to complete
     } else {
         currentVoice = 'adam';
         if (currentNumber !== null && !isShowingCelebration) speakNumber(currentNumber);
