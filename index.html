@@ -454,10 +454,10 @@
 <body class="bg-gray-600 min-h-screen relative">
 
     <!-- Dianne Avatar (Left - Female) -->
-    <img src="images/dianne.png" alt="Dianne" class="avatar-rachel" id="rachelAvatar" />
+    <img src="/images/dianne.png" alt="Dianne" class="avatar-rachel" id="rachelAvatar" />
 
     <!-- Harry Avatar (Right - Male) -->  
-    <img src="images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
+    <img src="/images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
 
     
     <!-- Drop Zone -->
@@ -527,11 +527,11 @@ function showDesktopMessage() {
                     This interactive learning tool is designed specifically for mobile devices to provide the optimal touch-based learning experience.
                 </p>
                 <p style="font-size: 18px; line-height: 1.6; margin-bottom: 20px; font-style: italic;">
-                    Esta herramienta de aprendizaje interactivo está diseñada específicamente para dispositivos móviles para brindar la experiencia de aprendizaje táctil óptima.
+                    Esta herramienta de aprendizaje interactiva está diseñada específicamente para dispositivos móviles para brindar la experiencia de aprendizaje táctil óptima.
                 </p>
                 <p style="font-size: 16px; line-height: 1.6; margin-bottom: 30px; opacity: 0.9;">
-                    Visit our main site on your smartphone to access all available learning apps.<br>
-                    <em>Visita nuestro sitio principal en tu teléfono para acceder a todas las aplicaciones de aprendizaje disponibles.</em>
+                    Visit our main site on your smartphone to access all of our available learning apps.<br>
+                    <em>Visita nuestro sitio principal en tu teléfono para acceder a todas nuestras aplicaciones de aprendizaje disponibles.</em>
                 </p>
                 <div style="
                     background: rgba(255, 255, 255, 0.1);
@@ -606,7 +606,7 @@ if (!isMobileDevice() && !isDeveloperMode()) {
         function speakNumber(number) {
             unlockAudio();
             
-            const audioFile = `audio/${currentVoice}_${number}.mp3`;
+            const audioFile = `/audio/${currentVoice}_${number}.mp3`;
             console.log('Trying to load:', audioFile);
             const audio = document.getElementById(`${currentVoice}Audio`);
             audio.src = audioFile;
