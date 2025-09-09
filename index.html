@@ -1,4 +1,494 @@
-// MOBILE-ONLY ENFORCEMENT
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
+    <title>Numbers Learning Center</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+
+<style>
+  /* FORCE LANDSCAPE ORIENTATION */
+  @media screen and (orientation: portrait) {
+    html {
+      transform: rotate(90deg);
+      transform-origin: left top;
+      width: 100vh;
+      height: 100vw;
+      overflow-x: hidden;
+      position: absolute;
+      top: 100%;
+      left: -10px;
+      right: -10px;
+    }
+  }
+
+  /* Prevent zoom on mobile */
+  * {
+      touch-action: manipulation;
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+  }
+
+  html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+  }
+
+  /* Avatar positioning and styling */
+  .avatar-rachel {
+      position: absolute;
+      top: 96px;
+      left: 64px;
+      width: 256px;
+      height: auto;
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.6));
+      cursor: pointer;
+  }
+
+  .avatar-adam {
+      position: absolute;
+      top: 88px;
+      right: 64px;
+      width: 280px;
+      height: auto;
+      filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.6));
+      cursor: pointer;
+  }
+
+  /* Mobile responsive avatars */
+  @media (max-width: 800px) and (orientation: landscape) {
+      .avatar-rachel {
+          width: 135px !important;
+          height: auto !important;
+          top: 30px !important;
+          left: 5px !important;
+          transform: none;
+      }
+      
+      .avatar-adam {
+          width: 150px !important;
+          height: auto !important;
+          top: 20px !important;
+          right: 5px !important;
+          transform: none;
+      }
+  }
+
+  /* Continue buttons below avatars */
+  .continue-button-left {
+      position: absolute;
+      top: 360px;
+      left: 64px;
+      transform: translateX(-25px);
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+      transition: all 0.3s ease;
+      display: none;
+      z-index: 100;
+  }
+
+  .continue-button-right {
+      position: absolute;
+      top: 360px;
+      right: 64px;
+      transform: translateX(25px);
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      border: none;
+      padding: 12px 24px;
+      border-radius: 20px;
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+      transition: all 0.3s ease;
+      display: none;
+      z-index: 100;
+  }
+
+  /* Mobile responsive continue buttons */
+  @media (max-width: 800px) and (orientation: landscape) {
+      .continue-button-left {
+          top: 150px;
+          left: 50px;
+          padding: 8px 16px;
+          font-size: 12px;
+      }
+      
+      .continue-button-right {
+          top: 150px;
+          right: 50px;
+          padding: 8px 16px;
+          font-size: 12px;
+      }
+  }
+
+  .continue-button-left:hover, .continue-button-right:hover {
+      transform: translateY(-2px);
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+  }
+
+  /* Drop zone styling */
+  .drop-zone {
+      position: absolute;
+      top: 25%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      min-width: 400px;
+      min-height: 120px;
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.2) 100%);
+      border-radius: 20px;
+      padding: 30px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.3));
+      backdrop-filter: blur(10px);
+      border: 3px solid rgba(16, 185, 129, 0.5);
+      transition: all 0.3s ease;
+  }
+
+  .drop-zone.has-number {
+      border: 3px solid rgba(16, 185, 129, 0.5);
+      background: rgba(16, 185, 129, 0.1);
+  }
+
+  .drop-zone.celebration {
+      border: 3px solid rgba(16, 185, 129, 0.8);
+      background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.2) 100%);
+      animation: celebrationPulse 1s ease-in-out infinite;
+      height: 80px;
+  }
+
+  @media (max-width: 800px) and (orientation: landscape) {
+      .drop-zone.celebration {
+          height: 80px;
+      }
+  }
+
+  @keyframes celebrationPulse {
+      0%, 100% { transform: translate(-50%, -50%) scale(1); }
+      50% { transform: translate(-50%, -50%) scale(1.05); }
+  }
+
+  .drop-zone-placeholder {
+      color: #9ca3af;
+      font-size: 24px;
+      font-weight: 600;
+      text-align: center;
+      font-style: italic;
+  }
+
+  /* Mobile responsive drop zone */
+  @media (max-width: 800px) and (orientation: landscape) {
+      .drop-zone {
+          min-width: 300px;
+          min-height: 80px;
+          padding: 20px;
+          top: 35%;
+      }
+      
+      .drop-zone-placeholder {
+          font-size: 18px;
+      }
+  }
+
+  /* Number bank styling */
+  .numbers-bank {
+      position: absolute;
+      bottom: 120px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 20px;
+      padding: 20px;
+      background: rgba(255, 255, 255, 0.1);
+      border-radius: 20px;
+      backdrop-filter: blur(10px);
+  }
+
+  .number-tile {
+      background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+      color: white;
+      border: none;
+      padding: 20px 30px;
+      border-radius: 15px;
+      font-size: 36px;
+      font-weight: 900;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
+      min-width: 80px;
+      text-align: center;
+  }
+
+  .number-tile:hover {
+      transform: translateY(-3px);
+      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+  }
+
+  .number-tile:active {
+      transform: scale(0.95);
+  }
+
+  /* Mobile responsive number bank */
+@media (max-width: 800px) and (orientation: landscape) {
+    .numbers-bank {
+        bottom: 80px;
+        gap: 8px;           /* Reduce gap from 12px to 8px */
+        padding: 10px;      /* Reduce padding from 15px to 10px */
+        flex-wrap: nowrap;  /* Force single row - no wrapping */
+        justify-content: center;
+        max-width: 95%;     /* Increase from 90% to 95% */
+        overflow-x: auto;   /* Allow horizontal scroll if needed */
+    }
+    
+    .number-tile {
+        padding: 10px 16px; /* Reduce padding from 12px 20px */
+        font-size: 20px;    /* Reduce from 24px */
+        min-width: 50px;    /* Reduce from 60px */
+        flex-shrink: 0;     /* Prevent tiles from shrinking */
+    }
+}
+
+  /* Number in drop zone */
+  .dropped-number {
+      font-size: 72px;
+      font-weight: 900;
+      color: #1f2937;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      animation: numberPulse 2s infinite ease-in-out;
+  }
+
+  .celebration-word {
+      font-size: 48px;
+      font-weight: 700;
+      color: #059669;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+      text-transform: uppercase;
+      letter-spacing: 2px;
+      animation: celebrationBounce 1.5s ease-in-out infinite;
+  }
+
+  @keyframes celebrationBounce {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+  }
+
+  @media (max-width: 800px) and (orientation: landscape) {
+      .dropped-number {
+          font-size: 48px;
+      }
+      
+      .celebration-word {
+          font-size: 32px;
+      }
+  }
+
+  /* Mode selector */
+  .mode-selector {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 15;
+  }
+
+  .mode-button {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      padding: 6px 12px;
+      border-radius: 18px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      backdrop-filter: blur(10px);
+      font-size: 13px;
+  }
+
+  .mode-button.active {
+      background: rgba(255, 255, 255, 0.9);
+      color: #1f2937;
+      border-color: rgba(255, 255, 255, 0.9);
+  }
+
+  @media (max-width: 800px) and (orientation: landscape) {
+      .mode-selector {
+          top: 15px;
+          gap: 4px;
+      }
+      
+      .mode-button {
+          padding: 3px 6px;
+          font-size: 10px;
+          border-radius: 12px;
+      }
+  }
+
+  /* Animations */
+  @keyframes numberPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+  }
+
+  @keyframes flyToDropZone {
+      0% {
+          transform: scale(1);
+          opacity: 1;
+      }
+      50% {
+          transform: scale(1.1);
+          opacity: 0.8;
+      }
+      100% {
+          transform: scale(1);
+          opacity: 1;
+      }
+  }
+
+  @keyframes correctAnswer {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+  }
+
+  @keyframes incorrectShake {
+      0%, 100% { transform: translateX(0); }
+      25% { transform: translateX(-10px); }
+      75% { transform: translateX(10px); }
+  }
+
+  @keyframes kickOut {
+      0% { transform: scale(1); }
+      25% { transform: scale(1.1) rotate(5deg); }
+      50% { transform: scale(0.9) rotate(-5deg); }
+      75% { transform: scale(1.1) rotate(3deg); }
+      100% { transform: scale(1) rotate(0deg); opacity: 0; }
+  }
+
+  @keyframes fireworkExplosion {
+      0% {
+          transform: scale(0);
+          opacity: 1;
+      }
+      50% {
+          transform: scale(2);
+          opacity: 1;
+      }
+      100% {
+          transform: scale(4);
+          opacity: 0;
+      }
+  }
+
+  /* Animation classes */
+  .flying {
+      animation: flyToDropZone 0.6s ease;
+  }
+
+  .correct {
+      animation: correctAnswer 0.8s ease;
+  }
+
+  .incorrect {
+      animation: incorrectShake 0.6s ease;
+  }
+
+  .kicked-out {
+      animation: kickOut 0.8s ease forwards;
+  }
+
+  /* ENHANCED FIREWORKS SYSTEM */
+.firework {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    opacity: 0;
+}
+
+.firework-active {
+    opacity: 1;
+    animation: firework-explosion 2s ease-out forwards;
+}
+
+@keyframes firework-explosion {
+    0% {
+        transform: translate(0, 0) scale(1);
+        opacity: 1;
+        box-shadow: 0 0 6px currentColor;
+    }
+    20% {
+        transform: translate(var(--dx), var(--dy)) scale(1.2);
+        opacity: 1;
+        box-shadow: 0 0 12px currentColor, 0 0 24px currentColor;
+    }
+    50% {
+        transform: translate(calc(var(--dx) * 2), calc(var(--dy) * 2)) scale(0.8);
+        opacity: 0.8;
+        box-shadow: 0 0 8px currentColor;
+    }
+    100% {
+        transform: translate(calc(var(--dx) * 3), calc(var(--dy) * 3)) scale(0.2);
+        opacity: 0;
+        box-shadow: 0 0 2px currentColor;
+    }
+}
+
+</style>
+</head>
+
+<body class="bg-gray-600 min-h-screen relative">
+
+    <!-- Dianne Avatar (Left - Female) -->
+    <img src="/images/dianne.png" alt="Dianne" class="avatar-rachel" id="rachelAvatar" />
+
+    <!-- Harry Avatar (Right - Male) -->  
+    <img src="/images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
+
+    
+    <!-- Drop Zone -->
+    <div class="drop-zone" id="dropZone">
+        <div class="drop-zone-placeholder" id="dropZonePlaceholder">
+            Click a number to hear it spoken!
+        </div>
+    </div>
+
+    <!-- Numbers Bank -->
+    <div class="numbers-bank" id="numbersBank">
+        <!-- Number tiles will be generated here -->
+    </div>
+
+    <!-- Mode Selector -->
+    <div class="mode-selector">
+        <button class="mode-button active" id="basicMode">Level 1 (0-10)</button>
+        <button class="mode-button" id="intermediateMode">Level 2 (0-20)</button>
+        <button class="mode-button" id="advancedMode">Level 3 (11-100)</button>
+        <button class="mode-button" id="expertMode">Level 4 (1-100)</button> 
+    </div>
+
+    <!-- Fireworks Container -->
+    <div class="fireworks-container" id="fireworksContainer"></div>
+
+    <!-- Audio elements -->
+    <audio id="adamAudio"></audio>
+    <audio id="rachelAudio"></audio>
+
+    <script>
+        // MOBILE-ONLY ENFORCEMENT
 function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
            window.innerWidth <= 1024;
@@ -62,3 +552,483 @@ if (!isMobileDevice() && !isDeveloperMode()) {
     showDesktopMessage();
     throw new Error('Desktop access blocked - mobile device required');
 }
+        // Extended number data with tens
+        const numbers = {
+    0: 'zero', 1: 'one', 2: 'two', 3: 'three', 4: 'four', 
+    5: 'five', 6: 'six', 7: 'seven', 8: 'eight', 9: 'nine', 10: 'ten',
+    11: 'eleven', 12: 'twelve', 13: 'thirteen', 14: 'fourteen', 15: 'fifteen',
+    16: 'sixteen', 17: 'seventeen', 18: 'eighteen', 19: 'nineteen', 20: 'twenty',
+    21: 'twenty-one', 22: 'twenty-two', 23: 'twenty-three', 24: 'twenty-four', 25: 'twenty-five',
+    26: 'twenty-six', 27: 'twenty-seven', 28: 'twenty-eight', 29: 'twenty-nine', 30: 'thirty',
+    31: 'thirty-one', 32: 'thirty-two', 33: 'thirty-three', 34: 'thirty-four', 35: 'thirty-five',
+    36: 'thirty-six', 37: 'thirty-seven', 38: 'thirty-eight', 39: 'thirty-nine', 40: 'forty',
+    41: 'forty-one', 42: 'forty-two', 43: 'forty-three', 44: 'forty-four', 45: 'forty-five',
+    46: 'forty-six', 47: 'forty-seven', 48: 'forty-eight', 49: 'forty-nine', 50: 'fifty',
+    51: 'fifty-one', 52: 'fifty-two', 53: 'fifty-three', 54: 'fifty-four', 55: 'fifty-five',
+    56: 'fifty-six', 57: 'fifty-seven', 58: 'fifty-eight', 59: 'fifty-nine', 60: 'sixty',
+    61: 'sixty-one', 62: 'sixty-two', 63: 'sixty-three', 64: 'sixty-four', 65: 'sixty-five',
+    66: 'sixty-six', 67: 'sixty-seven', 68: 'sixty-eight', 69: 'sixty-nine', 70: 'seventy',
+    71: 'seventy-one', 72: 'seventy-two', 73: 'seventy-three', 74: 'seventy-four', 75: 'seventy-five',
+    76: 'seventy-six', 77: 'seventy-seven', 78: 'seventy-eight', 79: 'seventy-nine', 80: 'eighty',
+    81: 'eighty-one', 82: 'eighty-two', 83: 'eighty-three', 84: 'eighty-four', 85: 'eighty-five',
+    86: 'eighty-six', 87: 'eighty-seven', 88: 'eighty-eight', 89: 'eighty-nine', 90: 'ninety',
+    91: 'ninety-one', 92: 'ninety-two', 93: 'ninety-three', 94: 'ninety-four', 95: 'ninety-five',
+    96: 'ninety-six', 97: 'ninety-seven', 98: 'ninety-eight', 99: 'ninety-nine', 100: 'one hundred'
+};
+
+        // Game state
+        let currentNumber = null;
+        let currentVoice = 'adam';
+        let score = 0;
+        let currentMode = 'basic';
+        let usedNumbers = [];
+        let droppedNumber = null;
+        let isShowingCelebration = false;
+
+        // DOM elements
+        const dropZone = document.getElementById('dropZone');
+        const dropZonePlaceholder = document.getElementById('dropZonePlaceholder');
+        const numbersBank = document.getElementById('numbersBank');
+        const fireworksContainer = document.getElementById('fireworksContainer');
+       
+
+        // Audio setup
+        let audioUnlocked = false;
+
+        function unlockAudio() {
+            if (!audioUnlocked) {
+                audioUnlocked = true;
+                console.log('Audio unlocked for mobile');
+            }
+        }
+
+        // Speak number function
+        function speakNumber(number) {
+            unlockAudio();
+            
+            const audioFile = `/audio/${currentVoice}_${number}.mp3`;
+            console.log('Trying to load:', audioFile);
+            const audio = document.getElementById(`${currentVoice}Audio`);
+            audio.src = audioFile;
+            
+            audio.play().catch(error => {
+                console.log('Audio file not found, using speech synthesis');
+                const utterance = new SpeechSynthesisUtterance(numbers[number]);
+                utterance.rate = 0.7;
+                utterance.pitch = 1.0;
+                speechSynthesis.speak(utterance);
+            });
+        }
+
+        // Get number range based on mode
+        function getNumberRange() {
+            switch(currentMode) {
+                case 'basic':
+                    return Array.from({length: 11}, (_, i) => i); // 0-10
+                case 'intermediate':
+                    return Array.from({length: 21}, (_, i) => i); // 0-20
+                case 'advanced':
+                    return [11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 30, 40, 50, 60, 70, 80, 90, 100]; // 11-100 (teens + tens)
+                case 'expert':
+                    return Array.from({length: 100}, (_, i) => i + 1); // 1-100 (placeholder for future)
+                default:
+                    return Array.from({length: 11}, (_, i) => i);
+            }
+        }
+
+        // Generate random number for the question
+        function generateRandomNumber() {
+            const range = getNumberRange();
+            const available = range.filter(n => !usedNumbers.includes(n));
+            
+            if (available.length === 0) {
+                usedNumbers = [];
+                return range[Math.floor(Math.random() * range.length)];
+            }
+            
+            const randomNum = available[Math.floor(Math.random() * available.length)];
+            usedNumbers.push(randomNum);
+            
+            if (usedNumbers.length > 5) {
+                usedNumbers = usedNumbers.slice(-5);
+            }
+            
+            return randomNum;
+        }
+
+        // Generate options for number bank
+        function generateNumberOptions(correctNumber) {
+            const range = getNumberRange();
+            let filteredRange;
+            
+            // Smart filtering based on mode and number
+            if (currentMode === 'intermediate') {
+                if (correctNumber <= 9) {
+                    filteredRange = range.filter(n => n <= 9);
+                } else {
+                    filteredRange = range.filter(n => n >= 10);
+                }
+            } else if (currentMode === 'advanced') {
+                if (correctNumber <= 20) {
+                    filteredRange = range.filter(n => n <= 20);
+                } else {
+                    filteredRange = range.filter(n => n >= 30);
+                }
+            } else if (currentMode === 'expert') {
+                // For future implementation - group by similar ranges
+                filteredRange = range;
+            } else {
+                filteredRange = range;
+            }
+            
+            const options = [correctNumber];
+            
+            while (options.length < 4) {
+                const randomChoice = filteredRange[Math.floor(Math.random() * filteredRange.length)];
+                if (!options.includes(randomChoice)) {
+                    options.push(randomChoice);
+                }
+            }
+            
+            return options.sort(() => Math.random() - 0.5);
+        }
+
+        // Create number bank
+        function createNumberBank() {
+            numbersBank.innerHTML = '';
+            const options = generateNumberOptions(currentNumber);
+            
+            options.forEach(num => {
+                const tile = document.createElement('button');
+                tile.className = 'number-tile';
+                tile.textContent = num;
+                tile.addEventListener('click', () => handleNumberClick(num, tile));
+                numbersBank.appendChild(tile);
+            });
+        }
+
+        // Handle number tile click
+        function handleNumberClick(number, tile) {
+            if (droppedNumber !== null) return;
+            
+            animateNumberToDropZone(number, tile);
+        }
+
+        // Animate number flying to drop zone
+        function animateNumberToDropZone(number, originalTile) {
+            const startRect = originalTile.getBoundingClientRect();
+            const dropRect = dropZone.getBoundingClientRect();
+            
+            const startX = startRect.left + startRect.width / 2;
+            const startY = startRect.top + startRect.height / 2;
+            const endX = dropRect.left + dropRect.width / 2;
+            const endY = dropRect.top + dropRect.height / 2;
+            
+            const flyingNumber = document.createElement('div');
+            flyingNumber.textContent = number;
+            flyingNumber.style.cssText = `
+                position: fixed;
+                left: ${startX}px;
+                top: ${startY}px;
+                font-size: 36px;
+                font-weight: 900;
+                color: white;
+                background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+                padding: 20px;
+                border-radius: 15px;
+                z-index: 999;
+                pointer-events: none;
+                transform: translate(-50%, -50%);
+                transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+            `;
+            
+            document.body.appendChild(flyingNumber);
+            originalTile.style.opacity = '0.3';
+            
+            requestAnimationFrame(() => {
+                flyingNumber.style.left = endX + 'px';
+                flyingNumber.style.top = endY + 'px';
+                flyingNumber.style.transform = 'translate(-50%, -50%) scale(1.2)';
+            });
+            
+            setTimeout(() => {
+                document.body.removeChild(flyingNumber);
+                moveToDropZone(number, originalTile);
+            }, 600);
+        }
+
+        // Move number to drop zone
+        function moveToDropZone(number, originalTile) {
+            droppedNumber = number;
+            dropZonePlaceholder.innerHTML = `<div class="dropped-number">${number}</div>`;
+            originalTile.style.opacity = '1';
+            
+            setTimeout(() => {
+                checkAnswer(number, originalTile);
+            }, 300);
+        }
+
+        // Check if answer is correct
+        function checkAnswer(selectedNumber, originalTile) {
+            if (selectedNumber === currentNumber) {
+                handleCorrectAnswer();
+            } else {
+                handleIncorrectAnswer(originalTile);
+            }
+        }
+
+        // Handle correct answer
+        function handleCorrectAnswer() {
+            // Award more points for harder levels
+            const pointsMap = { basic: 1, intermediate: 2, advanced: 3, expert: 4 };
+            score += pointsMap[currentMode];
+            isShowingCelebration = true;
+            
+            // Add green styling and celebration effect
+            dropZone.classList.add('has-number', 'celebration');
+            
+            // Show spelled out number
+            dropZonePlaceholder.innerHTML = `<div class="celebration-word">${numbers[currentNumber]}</div>`;
+            
+            // Create fireworks
+            createFireworks();
+
+            // Make correct tile pulse with color change
+            setTimeout(() => {
+                const numberTiles = document.querySelectorAll('.number-tile');
+                numberTiles.forEach(tile => {
+                    if (parseInt(tile.textContent) === currentNumber) {
+                        tile.style.background = 'linear-gradient(135deg, #10b981 0%, #059669 100%)';
+                        tile.style.animation = 'numberPulse 0.8s ease-in-out infinite';
+                    }
+                });
+            }, 100);
+            
+            // Show continue buttons
+            // continueButtonLeft.style.display = 'block';
+            // continueButtonRight.style.display = 'block';
+            
+            // Auto-play the correct number
+            setTimeout(() => {
+                speakNumber(currentNumber);
+            }, 500);
+        }
+
+        // Handle incorrect answer
+        function handleIncorrectAnswer(originalTile) {
+            // Get the dropped number element before clearing
+            const droppedNumberEl = dropZonePlaceholder.querySelector('.dropped-number');
+            if (droppedNumberEl) {
+                animateNumberFlyOut(droppedNumberEl.textContent, originalTile);
+            }
+        }
+
+        // Animate incorrect number flying out
+        function animateNumberFlyOut(numberText, originalTile) {
+            const dropRect = dropZone.getBoundingClientRect();
+            const startX = dropRect.left + dropRect.width / 2;
+            const startY = dropRect.top + dropRect.height / 2;
+            
+            const flyingReject = document.createElement('div');
+            flyingReject.textContent = numberText;
+            flyingReject.style.cssText = `
+                position: fixed;
+                left: ${startX}px;
+                top: ${startY}px;
+                font-size: 72px;
+                font-weight: 900;
+                color: #ef4444;
+                z-index: 999;
+                pointer-events: none;
+                transform: translate(-50%, -50%);
+                transition: all 1.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+                filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+            `;
+            
+            document.body.appendChild(flyingReject);
+            
+            // Immediately clear drop zone
+            resetDropZone();
+            
+            requestAnimationFrame(() => {
+                flyingReject.style.transform = 'translate(-200%, -200%) scale(0.3) rotate(720deg)';
+                flyingReject.style.opacity = '0';
+                flyingReject.style.color = '#dc2626';
+            });
+            
+            setTimeout(() => {
+                document.body.removeChild(flyingReject);
+                originalTile.style.visibility = 'visible';
+                originalTile.style.opacity = '1';
+                
+                // Avatar speaks correct number after wrong answer
+                speakNumber(currentNumber);
+            }, 600);
+        }
+
+        // Reset drop zone
+        function resetDropZone() {
+            droppedNumber = null;
+            dropZone.classList.remove('has-number', 'celebration');
+            dropZonePlaceholder.innerHTML = '';
+        }
+
+        // Create enhanced fireworks effect
+function createFireworks() {
+    const fireworkColors = ['#FFD700', '#FF6B47', '#4ECDC4', '#45B7D1', '#FF69B4', '#32CD32', '#FF4500', '#9370DB', '#00CED1', '#FFB6C1'];
+    const container = document.getElementById('fireworksContainer');
+    const centerX = window.innerWidth / 2;
+    const centerY = window.innerHeight / 2;
+    
+    const burstPoints = [
+        { x: centerX - 150, y: centerY - 80 },
+        { x: centerX + 150, y: centerY - 80 },
+        { x: centerX, y: centerY - 100 },
+        { x: centerX - 80, y: centerY + 40 },
+        { x: centerX + 80, y: centerY + 40 }
+    ];
+    
+    // Shorter timing - only 1 wave instead of 2
+    for (let wave = 0; wave < 1; wave++) {
+        setTimeout(() => {
+            burstPoints.forEach((point, burstIndex) => {
+                setTimeout(() => {
+                    // Fewer particles per burst for shorter show
+                    for (let i = 0; i < 8; i++) {
+                        setTimeout(() => {
+                            const firework = createFirework(point.x, point.y);
+                            container.appendChild(firework);
+                            
+                            requestAnimationFrame(() => {
+                                firework.classList.add('firework-active');
+                            });
+                            
+                            setTimeout(() => {
+                                if (firework.parentNode) {
+                                    firework.parentNode.removeChild(firework);
+                                }
+                            }, 1500); // Shorter cleanup time
+                        }, i * 15); // Faster particle creation
+                    }
+                }, burstIndex * 100); // Faster burst sequence
+            });
+        }, wave * 800); // Faster wave timing
+    }
+}
+
+
+// Create individual firework particle
+function createFirework(x, y) {
+    const firework = document.createElement('div');
+    firework.classList.add('firework');
+    
+    const fireworkColors = ['#FFD700', '#FF6B47', '#4ECDC4', '#45B7D1', '#FF69B4', '#32CD32', '#FF4500', '#9370DB', '#00CED1', '#FFB6C1'];
+    const color = fireworkColors[Math.floor(Math.random() * fireworkColors.length)];
+    firework.style.backgroundColor = color;
+    firework.style.color = color;
+    firework.style.borderRadius = '50%';
+    
+    const angle = Math.random() * Math.PI * 2;
+    const distance = 30 + Math.random() * 60; // Shorter distance for quicker show
+    const dx = Math.cos(angle) * distance;
+    const dy = Math.sin(angle) * distance;
+    
+    firework.style.setProperty('--dx', dx + 'px');
+    firework.style.setProperty('--dy', dy + 'px');
+    
+    const size = Math.random() * 4 + 3; // Slightly smaller particles
+    firework.style.width = size + 'px';
+    firework.style.height = size + 'px';
+    
+    firework.style.left = x + 'px';
+    firework.style.top = y + 'px';
+    
+    return firework;
+}
+
+        // Hide celebration and start next question
+        function hideCelebration() {
+            isShowingCelebration = false;
+         // continueButtonLeft.style.display = 'none';
+        // continueButtonRight.style.display = 'none';
+            
+            // Stop pulsing and reset colors
+            const numberTiles = document.querySelectorAll('.number-tile');
+            numberTiles.forEach(tile => {
+                tile.style.animation = '';
+                tile.style.background = 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)';
+            });
+            
+            startNewQuestion();
+        }
+
+        // Start new question
+        function startNewQuestion() {
+            currentNumber = generateRandomNumber();
+            resetDropZone();
+            createNumberBank();
+            dropZonePlaceholder.innerHTML = ``;
+            
+            setTimeout(() => {
+                speakNumber(currentNumber);
+            }, 200);
+        }
+
+        // Switch mode
+        function switchMode(mode) {
+            currentMode = mode;
+            usedNumbers = [];
+            
+            // Update button states
+            document.getElementById('basicMode').classList.toggle('active', mode === 'basic');
+            document.getElementById('intermediateMode').classList.toggle('active', mode === 'intermediate');
+            document.getElementById('advancedMode').classList.toggle('active', mode === 'advanced');
+             document.getElementById('expertMode').classList.toggle('active', mode === 'expert');
+            
+            startNewQuestion();
+        }
+
+      
+        
+        document.getElementById('basicMode').addEventListener('click', () => switchMode('basic'));
+        document.getElementById('intermediateMode').addEventListener('click', () => switchMode('intermediate'));
+        document.getElementById('advancedMode').addEventListener('click', () => switchMode('advanced'));
+        document.getElementById('expertMode').addEventListener('click', () => switchMode('expert'));
+
+  // Avatar click handlers
+document.getElementById('rachelAvatar').addEventListener('click', () => {
+    if (isShowingCelebration) {
+        currentVoice = 'rachel';
+        // Remove this line: speakNumber(currentNumber);
+        setTimeout(() => {
+            hideCelebration();
+        }, 200); // Wait for celebration to complete
+    } else {
+        currentVoice = 'rachel';
+        if (currentNumber !== null && !isShowingCelebration) speakNumber(currentNumber);
+    }
+});
+
+document.getElementById('adamAvatar').addEventListener('click', () => {
+    if (isShowingCelebration) {
+        currentVoice = 'adam';
+        // Remove this line: speakNumber(currentNumber);
+        setTimeout(() => {
+            hideCelebration();
+        }, 200); // Wait for celebration to complete
+    } else {
+        currentVoice = 'adam';
+        if (currentNumber !== null && !isShowingCelebration) speakNumber(currentNumber);
+    }
+});
+
+        // Touch events for mobile audio unlock
+        document.addEventListener('touchstart', unlockAudio, { once: true });
+        document.addEventListener('click', unlockAudio, { once: true });
+
+        // Initialize
+        startNewQuestion();
+    </script>
+</body>
+</html>
