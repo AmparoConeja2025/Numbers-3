@@ -60,7 +60,7 @@
   }
 
   /* Mobile responsive avatars */
-  @media (max-width: 800px) and (orientation: landscape) {
+  @media (max-width: 920px) and (orientation: landscape) {
       .avatar-rachel {
           width: 135px !important;
           height: auto !important;
@@ -204,6 +204,13 @@
       }
   }
 
+  /* Drop zone positioning fix for Pixel 7 and similar Android devices */
+@media (min-width: 801px) and (max-width: 920px) and (orientation: landscape) {
+    .drop-zone {
+        top: 40%;
+    }
+}
+
   /* Number bank styling */
   .numbers-bank {
       position: absolute;
@@ -234,7 +241,7 @@
   }
 
   .number-tile:hover {
-      transform: translateY(-3px);
+      transform: translateY(-3px)
       filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
   }
 
@@ -243,7 +250,7 @@
   }
 
   /* Mobile responsive number bank */
-@media (max-width: 800px) and (orientation: landscape) {
+@media (max-width: 920px) and (orientation: landscape) {
     .numbers-bank {
         bottom: 80px;
         gap: 8px;           /* Reduce gap from 12px to 8px */
@@ -259,6 +266,15 @@
         font-size: 20px;    /* Reduce from 24px */
         min-width: 50px;    /* Reduce from 60px */
         flex-shrink: 0;     /* Prevent tiles from shrinking */
+    }
+}
+
+/* Android-specific positioning fix for devices like Pixel 7 and Samsung A21s */
+/* More aggressive positioning */
+@media (max-width: 915px) and (orientation: landscape) {
+    .numbers-bank {
+        bottom: 10px !important;
+        transform: translateX(-50%) translateY(-60px) !important;
     }
 }
 
