@@ -241,8 +241,8 @@
   }
 
   .number-tile:hover {
-      transform: translateY(-3px)
-      filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+    transform: translateY(-3px);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
   }
 
   .number-tile:active {
@@ -470,10 +470,10 @@
 <body class="bg-gray-600 min-h-screen relative">
 
     <!-- Dianne Avatar (Left - Female) -->
-    <img src="images/dianne.png" alt="Dianne" class="avatar-rachel" id="rachelAvatar" />
+    <img src="/images/dianne.png" alt="Dianne" class="avatar-rachel" id="rachelAvatar" />
 
     <!-- Harry Avatar (Right - Male) -->  
-    <img src="images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
+    <img src="/images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
 
     
     <!-- Drop Zone -->
@@ -622,7 +622,7 @@ if (!isMobileDevice() && !isDeveloperMode()) {
         function speakNumber(number) {
             unlockAudio();
             
-            const audioFile = `audio/${currentVoice}_${number}.mp3`;
+            const audioFile = `/audio/${currentVoice}_${number}.mp3`;
             console.log('Trying to load:', audioFile);
             const audio = document.getElementById(`${currentVoice}Audio`);
             audio.src = audioFile;
