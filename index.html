@@ -470,10 +470,10 @@
 <body class="bg-gray-600 min-h-screen relative">
 
     <!-- Dianne Avatar (Left - Female) -->
-    <img src="images/dianne.png" alt="Dianne" class="avatar-rachel" id="rachelAvatar" />
+    <img src="/images/dianne.png" alt="Dianne" class="avatar-rachel" id="rachelAvatar" />
 
     <!-- Harry Avatar (Right - Male) -->  
-    <img src="images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
+    <img src="/images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
 
     
     <!-- Drop Zone -->
@@ -622,7 +622,7 @@ if (!isMobileDevice() && !isDeveloperMode()) {
         function speakNumber(number) {
             unlockAudio();
             
-            const audioFile = `audio/${currentVoice}_${number}.mp3`;
+            const audioFile = `/audio/${currentVoice}_${number}.mp3`;
             console.log('Trying to load:', audioFile);
             const audio = document.getElementById(`${currentVoice}Audio`);
             audio.src = audioFile;
@@ -867,11 +867,11 @@ if (!isMobileDevice() && !isDeveloperMode()) {
             // Immediately clear drop zone
             resetDropZone();
             
-            requestAnimationFrame(() => {
-                flyingReject.style.transform = 'translate(-200%, -200%) scale(0.3) rotate(720deg)';
-                flyingReject.style.opacity = '0';
-                flyingReject.style.color = '#dc2626';
-            });
+           setTimeout(() => {
+    flyingReject.style.transform = 'translate(-200%, -200%) scale(0.3) rotate(720deg)';
+    flyingReject.style.opacity = '0';
+    flyingReject.style.color = '#dc2626';
+}, 100);
             
             setTimeout(() => {
                 document.body.removeChild(flyingReject);
