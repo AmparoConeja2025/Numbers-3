@@ -355,6 +355,8 @@
       }
   }
 
+  
+
   /* Animations */
   @keyframes numberPulse {
       0%, 100% { transform: scale(1); }
@@ -464,6 +466,67 @@
     }
 }
 
+/* Progress Button */
+.progress-button {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    z-index: 20;
+    transition: all 0.3s ease;
+}
+
+.progress-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.progress-overlay.active {
+    display: flex;
+}
+
+.progress-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 280px;
+    width: 70%;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    color: white;
+    font-size: 14px;
+}
+
+.stat-value {
+    color: #FFD700;
+    font-size: 24px;
+    font-weight: 900;
+}
 </style>
 </head>
 
@@ -495,6 +558,28 @@
         <button class="mode-button" id="advancedMode">Level 3 (11-100)</button>
         <button class="mode-button" id="expertMode">Level 4 (1-100)</button> 
     </div>
+
+    <!-- Progress Button -->
+<button class="progress-button" id="progressButton">📊</button>
+
+<!-- Progress Overlay -->
+<div class="progress-overlay" id="progressOverlay">
+    <div class="progress-content">
+        <h2 style="color: white; text-align: center; margin-bottom: 20px;">Progress</h2>
+        <div class="stat-item">
+            <div class="stat-label">Today</div>
+            <div class="stat-value" id="dailyPoints">0</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">This Week</div>
+            <div class="stat-value" id="weeklyPoints">0</div>
+        </div>
+        <div class="stat-item">
+            <div class="stat-label">Lifetime</div>
+            <div class="stat-value" id="lifetimePoints">0</div>
+        </div>
+    </div>
+</div>
 
     <!-- Fireworks Container -->
     <div class="fireworks-container" id="fireworksContainer"></div>
@@ -796,9 +881,9 @@ if (!isMobileDevice() && !isDeveloperMode()) {
 
         // Handle correct answer
         function handleCorrectAnswer() {
-            // Award more points for harder levels
-            const pointsMap = { basic: 1, intermediate: 2, advanced: 3, expert: 4 };
-            score += pointsMap[currentMode];
+          // Award 1 point per correct answer
+        score += 1;
+        addPoints(1);
             isShowingCelebration = true;
             
             // Add green styling and celebration effect
@@ -1043,8 +1128,33 @@ document.getElementById('adamAvatar').addEventListener('click', () => {
         document.addEventListener('touchstart', unlockAudio, { once: true });
         document.addEventListener('click', unlockAudio, { once: true });
 
+// Progress tracking variables
+let dailyPoints = 0;
+let weeklyPoints = 0;
+let lifetimePoints = 0;
+
+// Simple add points function
+function addPoints(points) {
+    dailyPoints += points;
+    weeklyPoints += points;
+    lifetimePoints += points;
+    document.getElementById('dailyPoints').textContent = dailyPoints;
+    document.getElementById('weeklyPoints').textContent = weeklyPoints;
+    document.getElementById('lifetimePoints').textContent = lifetimePoints;
+}
+
+// Button click to open overlay
+document.getElementById('progressButton').addEventListener('click', () => {
+    document.getElementById('progressOverlay').classList.add('active');
+});
+
+// Click overlay to close
+document.getElementById('progressOverlay').addEventListener('click', () => {
+    document.getElementById('progressOverlay').classList.remove('active');
+});
+
         // Initialize
         startNewQuestion();
     </script>
 </body>
-</html>
+</html>3
