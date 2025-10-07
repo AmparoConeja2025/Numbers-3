@@ -533,10 +533,10 @@
 <body class="bg-gray-600 min-h-screen relative">
 
     <!-- Dianne Avatar (Left - Female) -->
-    <img src="images/dianne.png" alt="Dianne" class="avatar-rachel" id="rachelAvatar" />
+    <img src="/images/dianne.png" alt="Dianne" class="avatar-rachel" id="rachelAvatar" />
 
     <!-- Harry Avatar (Right - Male) -->  
-    <img src="images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
+    <img src="/images/harry.png" alt="Harry" class="avatar-adam" id="adamAvatar" />
 
     
     <!-- Drop Zone -->
@@ -707,7 +707,7 @@ if (!isMobileDevice() && !isDeveloperMode()) {
         function speakNumber(number) {
             unlockAudio();
             
-            const audioFile = `audio/${currentVoice}_${number}.mp3`;
+            const audioFile = `/audio/${currentVoice}_${number}.mp3`;
             console.log('Trying to load:', audioFile);
             const audio = document.getElementById(`${currentVoice}Audio`);
             audio.src = audioFile;
@@ -1132,15 +1132,52 @@ document.getElementById('adamAvatar').addEventListener('click', () => {
 let dailyPoints = 0;
 let weeklyPoints = 0;
 let lifetimePoints = 0;
+let lastPlayDate = null;
 
-// Simple add points function
+// Load progress from localStorage
+function loadProgress() {
+    const saved = localStorage.getItem('numbersProgress');
+    if (saved) {
+        const data = JSON.parse(saved);
+        const today = new Date().toDateString();
+        
+        if (data.lastPlayDate !== today) {
+            dailyPoints = 0;
+        } else {
+            dailyPoints = data.dailyPoints || 0;
+        }
+        
+        weeklyPoints = data.weeklyPoints || 0;
+        lifetimePoints = data.lifetimePoints || 0;
+        lastPlayDate = today;
+    } else {
+        lastPlayDate = new Date().toDateString();
+    }
+    updateProgressDisplay();
+}
+
+function saveProgress() {
+    const data = {
+        dailyPoints,
+        weeklyPoints,
+        lifetimePoints,
+        lastPlayDate
+    };
+    localStorage.setItem('numbersProgress', JSON.stringify(data));
+}
+
+function updateProgressDisplay() {
+    document.getElementById('dailyPoints').textContent = dailyPoints;
+    document.getElementById('weeklyPoints').textContent = weeklyPoints;
+    document.getElementById('lifetimePoints').textContent = lifetimePoints;
+}
+
 function addPoints(points) {
     dailyPoints += points;
     weeklyPoints += points;
     lifetimePoints += points;
-    document.getElementById('dailyPoints').textContent = dailyPoints;
-    document.getElementById('weeklyPoints').textContent = weeklyPoints;
-    document.getElementById('lifetimePoints').textContent = lifetimePoints;
+    saveProgress();
+    updateProgressDisplay();
 }
 
 // Button click to open overlay
@@ -1154,7 +1191,8 @@ document.getElementById('progressOverlay').addEventListener('click', () => {
 });
 
         // Initialize
+        loadProgress();
         startNewQuestion();
     </script>
 </body>
-</html>3
+</html>5
