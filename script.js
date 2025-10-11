@@ -110,7 +110,7 @@ function unlockAudio() {
 function speakNumber(number) {
     unlockAudio();
     
-    const audioFile = `/audio/${currentVoice}_${number}.mp3`;
+    const audioFile = `audio/${currentVoice}_${number}.mp3`;
     console.log('Trying to load:', audioFile);
     const audio = document.getElementById(`${currentVoice}Audio`);
     audio.src = audioFile;
@@ -528,4 +528,5 @@ document.getElementById('progressOverlay').addEventListener('click', () => {
 
 loadProgress();
 startNewQuestion();
+
 
