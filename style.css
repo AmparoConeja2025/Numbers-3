@@ -1,0 +1,495 @@
+/* FORCE LANDSCAPE ORIENTATION */
+@media screen and (orientation: portrait) {
+  html {
+    transform: rotate(90deg);
+    transform-origin: left top;
+    width: 100vh;
+    height: 100vw;
+    position: absolute;
+    top: 100%;
+    left: -10px;
+    right: -10px;
+  }
+}
+
+/* Prevent zoom on mobile */
+* {
+    touch-action: manipulation;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+}
+
+/* Avatar positioning and styling */
+.avatar-rachel {
+    position: absolute;
+    top: 96px;
+    left: 64px;
+    width: 256px;
+    height: auto;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.6));
+    cursor: pointer;
+}
+
+.avatar-adam {
+    position: absolute;
+    top: 88px;
+    right: 64px;
+    width: 280px;
+    height: auto;
+    filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.6));
+    cursor: pointer;
+}
+
+/* Mobile responsive avatars */
+@media (max-width: 920px) and (orientation: landscape) {
+    .avatar-rachel {
+        width: 135px !important;
+        height: auto !important;
+        top: 30px !important;
+        left: 5px !important;
+        transform: none;
+    }
+    
+    .avatar-adam {
+        width: 150px !important;
+        height: auto !important;
+        top: 20px !important;
+        right: 5px !important;
+        transform: none;
+    }
+}
+
+/* Continue buttons below avatars */
+.continue-button-left {
+    position: absolute;
+    top: 360px;
+    left: 64px;
+    transform: translateX(-25px);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+    display: none;
+    z-index: 100;
+}
+
+.continue-button-right {
+    position: absolute;
+    top: 360px;
+    right: 64px;
+    transform: translateX(25px);
+    background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    color: white;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 20px;
+    font-weight: 700;
+    font-size: 16px;
+    cursor: pointer;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.3));
+    transition: all 0.3s ease;
+    display: none;
+    z-index: 100;
+}
+
+/* Mobile responsive continue buttons */
+@media (max-width: 800px) and (orientation: landscape) {
+    .continue-button-left {
+        top: 150px;
+        left: 50px;
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+    
+    .continue-button-right {
+        top: 150px;
+        right: 50px;
+        padding: 8px 16px;
+        font-size: 12px;
+    }
+}
+
+.continue-button-left:hover, .continue-button-right:hover {
+    transform: translateY(-2px);
+    filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.4));
+}
+
+/* Drop zone styling */
+.drop-zone {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 400px;
+    min-height: 120px;
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.2) 100%);
+    border-radius: 20px;
+    padding: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    filter: drop-shadow(0 15px 35px rgba(0, 0, 0, 0.3));
+    backdrop-filter: blur(10px);
+    border: 3px solid rgba(16, 185, 129, 0.5);
+    transition: all 0.3s ease;
+}
+
+.drop-zone.has-number {
+    border: 3px solid rgba(16, 185, 129, 0.5);
+    background: rgba(16, 185, 129, 0.1);
+}
+
+.drop-zone.celebration {
+    border: 3px solid rgba(16, 185, 129, 0.8);
+    background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(5, 150, 105, 0.2) 100%);
+    animation: celebrationPulse 1s ease-in-out infinite;
+    height: 80px;
+}
+
+@media (max-width: 800px) and (orientation: landscape) {
+    .drop-zone.celebration {
+        height: 80px;
+    }
+}
+
+@keyframes celebrationPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.05); }
+}
+
+.drop-zone-placeholder {
+    color: #9ca3af;
+    font-size: 24px;
+    font-weight: 600;
+    text-align: center;
+    font-style: italic;
+}
+
+/* Mobile responsive drop zone */
+@media (max-width: 800px) and (orientation: landscape) {
+    .drop-zone {
+        min-width: 300px;
+        min-height: 80px;
+        padding: 20px;
+        top: 35%;
+    }
+    
+    .drop-zone-placeholder {
+        font-size: 18px;
+    }
+}
+
+/* Drop zone positioning fix for Pixel 7 and similar Android devices */
+@media (min-width: 801px) and (max-width: 920px) and (orientation: landscape) {
+    .drop-zone {
+        top: 40%;
+    }
+}
+
+/* Number bank styling */
+.numbers-bank {
+    position: absolute;
+    bottom: 120px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+}
+
+.number-tile {
+    background: linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%);
+    color: white;
+    border: none;
+    padding: 20px 30px;
+    border-radius: 15px;
+    font-size: 36px;
+    font-weight: 900;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    filter: drop-shadow(0 6px 12px rgba(0, 0, 0, 0.2));
+    min-width: 80px;
+    text-align: center;
+}
+
+.number-tile:hover {
+  transform: translateY(-3px);
+  filter: drop-shadow(0 8px 16px rgba(0, 0, 0, 0.3));
+}
+
+.number-tile:active {
+    transform: scale(0.95);
+}
+
+/* Mobile responsive number bank */
+@media (max-width: 920px) and (orientation: landscape) {
+    .numbers-bank {
+        bottom: 80px;
+        gap: 8px;
+        padding: 10px;
+        flex-wrap: nowrap;
+        justify-content: center;
+        max-width: 95%;
+        overflow-x: auto;
+    }
+    
+    .number-tile {
+        padding: 10px 16px;
+        font-size: 20px;
+        min-width: 50px;
+        flex-shrink: 0;
+    }
+}
+
+/* Android-specific positioning fix for devices like Pixel 7 and Samsung A21s */
+@media (max-width: 915px) and (orientation: landscape) {
+    .numbers-bank {
+        bottom: 10px !important;
+        transform: translateX(-50%) translateY(-60px) !important;
+    }
+}
+
+/* Number in drop zone */
+.dropped-number {
+    font-size: 72px;
+    font-weight: 900;
+    color: #1f2937;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    animation: numberPulse 2s infinite ease-in-out;
+}
+
+.celebration-word {
+    font-size: 48px;
+    font-weight: 700;
+    color: #059669;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    animation: celebrationBounce 1.5s ease-in-out infinite;
+}
+
+@keyframes celebrationBounce {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+}
+
+@media (max-width: 800px) and (orientation: landscape) {
+    .dropped-number {
+        font-size: 48px;
+    }
+    
+    .celebration-word {
+        font-size: 32px;
+    }
+}
+
+/* Mode selector */
+.mode-selector {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 8px;
+    z-index: 15;
+}
+
+.mode-button {
+    background: rgba(255, 255, 255, 0.2);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    padding: 6px 12px;
+    border-radius: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    font-size: 13px;
+}
+
+.mode-button.active {
+    background: rgba(255, 255, 255, 0.9);
+    color: #1f2937;
+    border-color: rgba(255, 255, 255, 0.9);
+}
+
+@media (max-width: 800px) and (orientation: landscape) {
+    .mode-selector {
+        top: 15px;
+        gap: 4px;
+    }
+    
+    .mode-button {
+        padding: 3px 6px;
+        font-size: 10px;
+        border-radius: 12px;
+    }
+}
+
+/* Animations */
+@keyframes numberPulse {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.05); }
+}
+
+@keyframes flyToDropZone {
+    0% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.1); opacity: 0.8; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes correctAnswer {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+}
+
+@keyframes incorrectShake {
+    0%, 100% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+}
+
+@keyframes kickOut {
+    0% { transform: scale(1); }
+    25% { transform: scale(1.1) rotate(5deg); }
+    50% { transform: scale(0.9) rotate(-5deg); }
+    75% { transform: scale(1.1) rotate(3deg); }
+    100% { transform: scale(1) rotate(0deg); opacity: 0; }
+}
+
+@keyframes fireworkExplosion {
+    0% { transform: scale(0); opacity: 1; }
+    50% { transform: scale(2); opacity: 1; }
+    100% { transform: scale(4); opacity: 0; }
+}
+
+/* Animation classes */
+.flying { animation: flyToDropZone 0.6s ease; }
+.correct { animation: correctAnswer 0.8s ease; }
+.incorrect { animation: incorrectShake 0.6s ease; }
+.kicked-out { animation: kickOut 0.8s ease forwards; }
+
+/* ENHANCED FIREWORKS SYSTEM */
+.firework {
+    position: absolute;
+    width: 8px;
+    height: 8px;
+    opacity: 0;
+}
+
+.firework-active {
+    opacity: 1;
+    animation: firework-explosion 2s ease-out forwards;
+}
+
+@keyframes firework-explosion {
+    0% { transform: translate(0, 0) scale(1); opacity: 1; box-shadow: 0 0 6px currentColor; }
+    20% { transform: translate(var(--dx), var(--dy)) scale(1.2); opacity: 1; box-shadow: 0 0 12px currentColor, 0 0 24px currentColor; }
+    50% { transform: translate(calc(var(--dx) * 2), calc(var(--dy) * 2)) scale(0.8); opacity: 0.8; box-shadow: 0 0 8px currentColor; }
+    100% { transform: translate(calc(var(--dx) * 3), calc(var(--dy) * 3)) scale(0.2); opacity: 0; box-shadow: 0 0 2px currentColor; }
+}
+
+/* Progress Button */
+.progress-button {
+    position: absolute;
+    bottom: 80px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.2);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 8px 12px;
+    border-radius: 50%;
+    font-size: 20px;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    z-index: 20;
+    transition: all 0.3s ease;
+}
+
+.progress-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.progress-overlay.active {
+    display: flex;
+}
+
+.progress-content {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 25px;
+    border-radius: 15px;
+    max-width: 280px;
+    width: 70%;
+}
+
+.stat-item {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.stat-label {
+    color: white;
+    font-size: 14px;
+}
+
+.stat-value {
+    color: #FFD700;
+    font-size: 24px;
+    font-weight: 900;
+}
+
+/* --- Home Button Styles --- */
+.home-button {
+  position: fixed;
+  bottom: calc(20px + env(safe-area-inset-bottom));
+  left: calc(20px + env(safe-area-inset-left));
+  z-index: 100;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 6px;
+  border-radius: 50%;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3);
+  transition: transform 0.2s ease-in-out, background-color 0.2s ease;
+}
+
+.home-button:hover,
+.home-button:active {
+  transform: scale(1.1);
+  background-color: rgba(255, 255, 255, 0.4);
+}
+
+.home-button img {
+  width: 21px;
+  height: 21px;
+  display: block;
+}
