@@ -1,3 +1,10 @@
+body { background-color: #4B5563; }
+
+body {
+  /* Use the correct color for the app's background */
+  background-color: #4B5563; 
+}
+
 /* FORCE LANDSCAPE ORIENTATION */
 @media screen and (orientation: portrait) {
   html {

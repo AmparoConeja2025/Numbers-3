@@ -1,3 +1,16 @@
+enterFullscreen()
+
+// --- TRUE FULLSCREEN MODE FOR ANDROID ---
+function enterFullscreen() {
+  if (document.body.requestFullscreen && !document.fullscreenElement) {
+    document.body.requestFullscreen({ navigationUI: "hide" }).catch(err => {
+      console.error(`Error attempting to enable full-screen mode: ${err.message} (${err.name})`);
+    });
+  }
+}
+document.addEventListener('click', enterFullscreen, { once: true });
+document.addEventListener('touchstart', enterFullscreen, { once: true });
+
 // MOBILE-ONLY ENFORCEMENT
 function isMobileDevice() {
     return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || 
@@ -110,7 +123,7 @@ function unlockAudio() {
 function speakNumber(number) {
     unlockAudio();
     
-    const audioFile = `audio/${currentVoice}_${number}.mp3`;
+    const audioFile = `/audio/${currentVoice}_${number}.mp3`;
     console.log('Trying to load:', audioFile);
     const audio = document.getElementById(`${currentVoice}Audio`);
     audio.src = audioFile;
@@ -529,4 +542,4 @@ document.getElementById('progressOverlay').addEventListener('click', () => {
 loadProgress();
 startNewQuestion();
 
-
+navigator.serviceWorker.register('sw.js');
